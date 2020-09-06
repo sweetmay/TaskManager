@@ -1,22 +1,26 @@
 package com.sweetmay.taskmanager
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 
 
-class MainViewModel : ViewModel() {
-    private var model: Model = Model()
-    private var clicks = MutableLiveData<Int>()
+class MainViewModel : ViewModel(), OnNotesChanged {
+    private var notes = MutableLiveData<ArrayList<Note>>()
 
-    fun update(){
-        model.incrementData()
-        model.getData(object : OnRequestData{
-            override fun requestData(data: Int){
-                clicks.value = data
-            }
-        })
+    init {
+        notes.value = Repository.getNotes()
     }
 
-    fun getViewState(): LiveData<Int> = clicks
+    fun addNote(note: Note){
+        Repository.addNote(note, this)
+    }
+
+    fun getNotes(): MutableLiveData<ArrayList<Note>> = notes
+
+    override fun updateData(notes: ArrayList<Note>) {
+        this.notes.value = notes
+    }
 }
