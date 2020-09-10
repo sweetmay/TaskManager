@@ -1,5 +1,9 @@
 package com.sweetmay.taskmanager
 
-class Note (var title: String, var text: String, val date: String){
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import java.util.*
 
+@Parcelize
+data class Note (var title: String, var text: String, var date: Date, var id: String) : Parcelable {
 }

@@ -7,20 +7,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 
 
-class MainViewModel : ViewModel(), OnNotesChanged {
+class MainViewModel : ViewModel(){
     private var notes = MutableLiveData<ArrayList<Note>>()
 
     init {
-        notes.value = Repository.getNotes()
+        Repository.getNotes().observeForever { arr->
+            notes.value = arr
+        }
     }
 
-    fun addNote(note: Note){
-        Repository.addNote(note, this)
-    }
+    fun getNotes(): LiveData<ArrayList<Note>> = notes
 
-    fun getNotes(): MutableLiveData<ArrayList<Note>> = notes
-
-    override fun updateData(notes: ArrayList<Note>) {
-        this.notes.value = notes
-    }
 }
