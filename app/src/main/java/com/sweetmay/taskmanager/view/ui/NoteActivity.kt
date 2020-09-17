@@ -1,9 +1,12 @@
-package com.sweetmay.taskmanager
+package com.sweetmay.taskmanager.view.ui
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.sweetmay.taskmanager.viewmodel.NoteViewModel
+import com.sweetmay.taskmanager.R
+import com.sweetmay.taskmanager.model.Note
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.appbar_layout.*
 
@@ -29,6 +32,7 @@ class NoteActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId){
         android.R.id.home ->{
             onBackPressed()
@@ -36,9 +40,8 @@ class NoteActivity : AppCompatActivity() {
         }else -> super.onOptionsItemSelected(item)
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         viewModel.save(note_title.text.toString(), note_body.text.toString())
     }
 }

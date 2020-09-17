@@ -1,8 +1,10 @@
-package com.sweetmay.taskmanager
+package com.sweetmay.taskmanager.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
+import com.sweetmay.taskmanager.R
+import com.sweetmay.taskmanager.model.Note
+import com.sweetmay.taskmanager.model.Repository
 import java.util.*
 
 class NoteViewModel(app:Application) : AndroidViewModel(app) {
@@ -29,10 +31,10 @@ class NoteViewModel(app:Application) : AndroidViewModel(app) {
             it.title = checkedTitle
             it.text = checkedBody
             it.date = Date()
-            Repository.editOrAddNote(it)
+            Repository.saveNote(it)
             return
         }
-        Repository.editOrAddNote(Note(checkedTitle, checkedBody, Date(), UUID.randomUUID().toString()))
+        Repository.saveNote(Note(checkedTitle, checkedBody, Date(), UUID.randomUUID().toString()))
     }
 
     override fun onCleared() {

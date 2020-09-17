@@ -1,12 +1,18 @@
-package com.sweetmay.taskmanager
+package com.sweetmay.taskmanager.view.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sweetmay.taskmanager.*
+import com.sweetmay.taskmanager.model.Note
+import com.sweetmay.taskmanager.view.adapter.TaskAdapterRV
+import com.sweetmay.taskmanager.view.callback.OnItemRVClick
+import com.sweetmay.taskmanager.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), OnItemRVClick {
 
@@ -23,7 +29,8 @@ class MainActivity : AppCompatActivity(), OnItemRVClick {
         notes_rv.adapter = adapterRV
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getNotes().observe(this, {noteArr ->
+        viewModel.getNotes().observe(this, { noteArr ->
+            Log.d("aa", noteArr.toString())
             adapterRV.notes = noteArr
         })
 
