@@ -1,24 +1,23 @@
-package com.sweetmay.taskmanager
+package com.sweetmay.taskmanager.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.sweetmay.taskmanager.R
+import com.sweetmay.taskmanager.model.Note
+import com.sweetmay.taskmanager.view.callback.OnItemRVClick
 import kotlinx.android.synthetic.main.item_task.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class TaskAdapterRV(var onItemRVClick: OnItemRVClick) : RecyclerView.Adapter<TaskAdapterRV.ViewHolder>() {
     val smf = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.getDefault())
-    var notes = ArrayList<Note>()
+    var notes = listOf<Note>()
     set(value) {
+        Collections.sort(value)
         field = value
         notifyDataSetChanged()
-    }
-
-    init {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
