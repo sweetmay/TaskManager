@@ -1,15 +1,12 @@
 package com.sweetmay.taskmanager.view.ui
 
-import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import com.sweetmay.taskmanager.view.ui.base.BaseActivity
 import com.sweetmay.taskmanager.view.ui.viewmodel.SplashViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
 
-    override val viewModel by lazy{
-        ViewModelProvider(this).get(SplashViewModel::class.java)
-    }
+    override val viewModel: SplashViewModel by viewModel()
 
     override fun onResume() {
         super.onResume()

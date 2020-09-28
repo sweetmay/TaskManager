@@ -2,36 +2,45 @@ package com.sweetmay.taskmanager.view.ui
 
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.ViewModelProvider
-import com.sweetmay.taskmanager.view.ui.viewmodel.NoteViewModel
 import com.sweetmay.taskmanager.R
+import com.sweetmay.taskmanager.extensions.getColorRes
 import com.sweetmay.taskmanager.model.Note
 import com.sweetmay.taskmanager.view.ui.base.BaseActivity
+import com.sweetmay.taskmanager.view.ui.customviews.colorpicker.OnColorClickListener
+import com.sweetmay.taskmanager.view.ui.viewmodel.NoteViewModel
 import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.appbar_layout.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     override val layoutRes: Int?
         get() = R.layout.activity_note
 
-    override val viewModel: NoteViewModel by lazy {
-        ViewModelProvider(this).get(NoteViewModel::class.java)
-    }
+    override val viewModel: NoteViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
+        val colors: ArrayList<Int> = ArrayList()
+        Note.Color.values().forEach { color ->
+            colors.add(color.getColorRes())
+        }
+        circle_container.addCircles(colors, object: OnColorClickListener{
+            override fun onClick(color: Int) {
+                toolbar.setBackgroundColor(getColor(color))
+                viewModel.save(note_title.text.toString(), note_body.text.toString())
+            }
+        })
+
         supportActionBar?.title = getString(R.string.note)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         editNote()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean{
-        MenuInflater(this).inflate(R.menu.note_menu, menu)
+        menuInflater.inflate(R.menu.note_menu, menu)
         return true
     }
 
@@ -45,7 +54,21 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
                 viewModel.deleteNote()
                 finish()
                 true
+            }
+            R.id.expand_colors -> {
+                toggleColors(item)
+                true
             }else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun toggleColors(item: MenuItem){
+        if(circle_container.isOpen){
+            circle_container.close()
+            item.setIcon(R.drawable.ic_expand_more_24px)
+        }else{
+            circle_container.open()
+            item.setIcon(R.drawable.ic_expand_less_24px)
         }
     }
 

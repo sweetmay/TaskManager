@@ -8,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.sweetmay.taskmanager.model.errors.NoAuthException
 import java.lang.IllegalArgumentException
 
-class FireStoreProvider : DataProvider {
+class FireStoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFirestore) : DataProvider {
 
     companion object{
         private const val NOTES_COLLECTION_KEY = "notes"
@@ -16,8 +16,8 @@ class FireStoreProvider : DataProvider {
     }
 
     private val currentUser
-        get() = FirebaseAuth.getInstance().currentUser
-    private val store by lazy { FirebaseFirestore.getInstance() }
+        get() = firebaseAuth.currentUser
+
     private val notesReference
         get() =  currentUser?.let { store.collection(USERS_COLLECTION_KEY).document(it.uid).collection(
         NOTES_COLLECTION_KEY) } ?: throw NoAuthException()

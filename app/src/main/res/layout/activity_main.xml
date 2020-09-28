@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.ui.MainActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/notes_rv"
         android:layout_width="match_parent"
@@ -27,5 +28,6 @@
         layout="@layout/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
