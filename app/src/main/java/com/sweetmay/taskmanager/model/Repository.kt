@@ -1,8 +1,7 @@
 package com.sweetmay.taskmanager.model
 
-object Repository {
+class Repository(val dataProvider: DataProvider) {
 
-    private val dataProvider: DataProvider = FireStoreProvider()
     fun getCurrentUser() = dataProvider.getCurrentUser()
     fun getNotes() = dataProvider.subscribeToAllNotes()
     fun saveNote(note: Note) = dataProvider.saveNote(note)

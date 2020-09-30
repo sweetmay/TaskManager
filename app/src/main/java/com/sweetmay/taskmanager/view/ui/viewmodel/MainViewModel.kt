@@ -7,7 +7,7 @@ import com.sweetmay.taskmanager.model.Repository
 import com.sweetmay.taskmanager.view.ui.MainViewState
 import com.sweetmay.taskmanager.view.ui.base.BaseViewModel
 
-class MainViewModel(): BaseViewModel<List<Note>?, MainViewState>(){
+class MainViewModel(val repository: Repository): BaseViewModel<List<Note>?, MainViewState>(){
 
     private val notesObserver = Observer<NoteResult> {
         it ?: return@Observer
@@ -17,7 +17,7 @@ class MainViewModel(): BaseViewModel<List<Note>?, MainViewState>(){
         }
     }
 
-    private val repositoryNotes = Repository.getNotes()
+    private val repositoryNotes = repository.getNotes()
 
     init {
         viewStateLiveData.value = MainViewState()

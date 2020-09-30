@@ -3,18 +3,16 @@ package com.sweetmay.taskmanager.view.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.sweetmay.taskmanager.*
+import com.sweetmay.taskmanager.R
 import com.sweetmay.taskmanager.model.Note
-import com.sweetmay.taskmanager.model.Repository
 import com.sweetmay.taskmanager.view.adapter.TaskAdapterRV
 import com.sweetmay.taskmanager.view.callback.OnItemRVClick
 import com.sweetmay.taskmanager.view.ui.base.BaseActivity
 import com.sweetmay.taskmanager.view.ui.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity<List<Note>?, MainViewState>(), OnItemRVClick {
@@ -27,9 +25,9 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), OnItemRVClick {
 
     override val layoutRes: Int
         get() = R.layout.activity_main
-    override val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
-    }
+
+    override val viewModel: MainViewModel by viewModel()
+
     lateinit var adapterRV: TaskAdapterRV
 
     override fun onCreate(savedInstanceState: Bundle?) {

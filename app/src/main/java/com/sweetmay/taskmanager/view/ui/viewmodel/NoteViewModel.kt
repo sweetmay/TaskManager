@@ -12,9 +12,9 @@ import com.sweetmay.taskmanager.view.ui.NoteViewState
 import com.sweetmay.taskmanager.view.ui.base.BaseViewModel
 import java.util.*
 
-class NoteViewModel() : BaseViewModel<Note?, NoteViewState>() {
+class NoteViewModel(val repository: Repository) : BaseViewModel<Note?, NoteViewState>() {
 
-    private var repositoryNotes: LiveData<NoteResult> = Repository.getNoteById("")
+    private var repositoryNotes: LiveData<NoteResult> = repository.getNoteById("")
     private val emptyTitle = App.instance.resources.getString(R.string.empty_note_title)
     private val emptyBody = App.instance.resources.getString(R.string.empty_note_body)
     private var pendingNote: Note? = null
@@ -32,7 +32,7 @@ class NoteViewModel() : BaseViewModel<Note?, NoteViewState>() {
     }
 
     fun loadNote(id: String){
-        repositoryNotes = Repository.getNoteById(id)
+        repositoryNotes = repository.getNoteById(id)
         repositoryNotes.observeForever (notesObserver)
     }
 
@@ -58,15 +58,15 @@ class NoteViewModel() : BaseViewModel<Note?, NoteViewState>() {
                     it.title = checkedTitle
                     it.text = checkedBody
                 }
-                Repository.saveNote(it)
-            } ?: Repository.saveNote(Note(checkedTitle, checkedBody, Date(), UUID.randomUUID().toString()))
+                repository.saveNote(it)
+            } ?: repository.saveNote(Note(checkedTitle, checkedBody, Date(), UUID.randomUUID().toString()))
 
         }
     }
 
     fun deleteNote(){
         toDelete = true
-        pendingNote?.id?.let { Repository.deleteNoteById(it) }
+        pendingNote?.id?.let { repository.deleteNoteById(it) }
     }
 
     override fun onCleared() {

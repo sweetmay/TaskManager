@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
@@ -10,6 +11,14 @@
         layout="@layout/appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <com.sweetmay.taskmanager.view.ui.customviews.colorpicker.CircleContainer
+        android:id="@+id/circle_container"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:circlePaddings="8dp"
+        />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/note_title_input_layout"
