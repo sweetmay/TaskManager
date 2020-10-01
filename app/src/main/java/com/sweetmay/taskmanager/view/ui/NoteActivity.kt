@@ -23,20 +23,23 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(toolbar)
+        initCirclesContainerView()
+        supportActionBar?.title = getString(R.string.note)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        editNote()
+    }
+
+    private fun initCirclesContainerView() {
         val colors: ArrayList<Int> = ArrayList()
         Note.Color.values().forEach { color ->
             colors.add(color.getColorRes())
         }
-        circle_container.addCircles(colors, object: OnColorClickListener{
+        circle_container.addCircles(colors, object : OnColorClickListener {
             override fun onClick(color: Int) {
                 toolbar.setBackgroundColor(getColor(color))
                 viewModel.save(note_title.text.toString(), note_body.text.toString())
             }
         })
-
-        supportActionBar?.title = getString(R.string.note)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        editNote()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean{

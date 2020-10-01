@@ -1,6 +1,7 @@
 package com.sweetmay.taskmanager.view.ui
 
 import android.app.Application
+import androidx.annotation.VisibleForTesting
 import com.sweetmay.taskmanager.di.appModule
 import com.sweetmay.taskmanager.di.mainModule
 import com.sweetmay.taskmanager.di.noteModule

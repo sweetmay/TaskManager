@@ -1,7 +1,9 @@
 package com.sweetmay.taskmanager.view.ui.viewmodel
 
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.sweetmay.taskmanager.R
 import com.sweetmay.taskmanager.model.Note
@@ -14,11 +16,15 @@ import java.util.*
 
 class NoteViewModel(val repository: Repository) : BaseViewModel<Note?, NoteViewState>() {
 
-    private var repositoryNotes: LiveData<NoteResult> = repository.getNoteById("")
-    private val emptyTitle = App.instance.resources.getString(R.string.empty_note_title)
-    private val emptyBody = App.instance.resources.getString(R.string.empty_note_body)
+    private var repositoryNotes: LiveData<NoteResult> = MutableLiveData()
+
     private var pendingNote: Note? = null
     private var toDelete: Boolean = false
+
+    private val emptyTitle
+        get() = App.instance.resources.getString(R.string.empty_note_title)
+    private val emptyBody
+        get() = App.instance.resources.getString(R.string.empty_note_body)
 
     private val notesObserver = Observer<NoteResult> {
         it ?: return@Observer
@@ -42,6 +48,7 @@ class NoteViewModel(val repository: Repository) : BaseViewModel<Note?, NoteViewS
 
 
     fun save(title: String, body: String){
+
         if(!toDelete){
             if(title.isEmpty() && body.isEmpty()){
                 return
@@ -60,7 +67,6 @@ class NoteViewModel(val repository: Repository) : BaseViewModel<Note?, NoteViewS
                 }
                 repository.saveNote(it)
             } ?: repository.saveNote(Note(checkedTitle, checkedBody, Date(), UUID.randomUUID().toString()))
-
         }
     }
 

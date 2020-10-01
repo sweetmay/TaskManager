@@ -5,6 +5,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.util.AttributeSet
+import android.view.Gravity
 import android.widget.LinearLayout
 import androidx.annotation.Dimension
 import androidx.core.view.children
@@ -55,6 +56,7 @@ class CircleContainer@JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     init {
+        gravity = Gravity.CENTER
         orientation = HORIZONTAL
         val a = context.obtainStyledAttributes(attrs, R.styleable.CircleContainer)
 

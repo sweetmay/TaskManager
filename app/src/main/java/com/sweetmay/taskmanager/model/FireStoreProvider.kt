@@ -39,7 +39,6 @@ class FireStoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
                     result.value = NoteResult.Success(notes)
                 }
             }
-
             result
         }catch (e: NoAuthException){
             result.value = NoteResult.Error(e)
@@ -48,49 +47,43 @@ class FireStoreProvider(val firebaseAuth: FirebaseAuth, val store: FirebaseFires
 
     }
 
-    override fun saveNote(note: Note): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
-        return try {
-            notesReference.document(note.id).set(note).addOnSuccessListener {
-                result.value = NoteResult.Success(note)
-            }.addOnFailureListener{
-                result.value = NoteResult.Error(it)
-            }
-            result
-        }catch (e: NoAuthException){
-            result.value = NoteResult.Error(e)
-            result
+    override fun saveNote(note: Note): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        try {
+            notesReference.document(note.id).set(note)
+                .addOnSuccessListener {
+                    value = NoteResult.Success(note)
+                }.addOnFailureListener {
+                    value = NoteResult.Error(it)
+                }
+        } catch (t: Throwable) {
+            value = NoteResult.Error(t)
         }
     }
 
-    override fun getById(id: String): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
-        return try {
-            notesReference.document(id).get().addOnSuccessListener {
-                val note = it.toObject(Note::class.java)
-                result.value = NoteResult.Success(note)
-            }.addOnFailureListener{
-                result.value = NoteResult.Error(it)
-            }
-            result
-        }catch (e: IllegalArgumentException){
-            result.value = NoteResult.Error(e)
-            result
+    override fun getById(id: String): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        try {
+            notesReference.document(id).get()
+                .addOnSuccessListener { snapshot ->
+                    val note = snapshot.toObject(Note::class.java)
+                    value = NoteResult.Success(note)
+                }.addOnFailureListener {
+                    value = NoteResult.Error(it)
+                }
+        } catch (t: Throwable) {
+            value = NoteResult.Error(t)
         }
     }
 
-    override fun deleteNoteById(id: String): LiveData<NoteResult> {
-        val result = MutableLiveData<NoteResult>()
-        return try {
-            notesReference.document(id).delete().addOnSuccessListener {
-                result.value = NoteResult.Success(it)
-            }.addOnFailureListener{
-                result.value = NoteResult.Error(it)
-            }
-            result
-        }catch (e: IllegalArgumentException){
-            result.value = NoteResult.Error(e)
-            result
+    override fun deleteNoteById(id: String): LiveData<NoteResult> = MutableLiveData<NoteResult>().apply {
+        try {
+            notesReference.document(id).delete()
+                .addOnSuccessListener { snapshot ->
+                    value = NoteResult.Success(null)
+                }.addOnFailureListener {
+                    value = NoteResult.Error(it)
+                }
+        } catch (t: Throwable) {
+            value = NoteResult.Error(t)
         }
     }
 }

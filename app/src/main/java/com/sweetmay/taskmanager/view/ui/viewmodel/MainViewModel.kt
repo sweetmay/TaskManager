@@ -1,5 +1,6 @@
 package com.sweetmay.taskmanager.view.ui.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.Observer
 import com.sweetmay.taskmanager.model.Note
 import com.sweetmay.taskmanager.model.NoteResult
@@ -24,7 +25,8 @@ class MainViewModel(val repository: Repository): BaseViewModel<List<Note>?, Main
         repositoryNotes.observeForever (notesObserver)
     }
 
-    override fun onCleared() {
+    @VisibleForTesting
+    public override fun onCleared() {
         super.onCleared()
         repositoryNotes.removeObserver(notesObserver)
     }
