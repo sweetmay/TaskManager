@@ -4,7 +4,7 @@ import com.sweetmay.taskmanager.view.ui.base.BaseActivity
 import com.sweetmay.taskmanager.view.ui.viewmodel.SplashViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SplashActivity: BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity: BaseActivity<Boolean?>() {
 
     override val viewModel: SplashViewModel by viewModel()
 

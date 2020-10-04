@@ -32,11 +32,11 @@ class MainActivityTest {
     private val viewStateLiveData = MutableLiveData<MainViewState>()
 
     private val testNotes = listOf(
-        Note("1", "1", Date(), "1"),
-        Note("2", "2", Date(), "2"),
-        Note("3", "3", Date(), "3"),
-        Note("4", "4", Date(), "4"),
-        Note("5", "5", Date(), "5")
+        Note("title1", "1", Date(), "1"),
+        Note("title2", "2", Date(), "2"),
+        Note("title3", "3", Date(), "3"),
+        Note("title4", "4", Date(), "4"),
+        Note("title5", "5", Date(), "5")
     )
 
     @Before

@@ -1,10 +1,11 @@
 package com.sweetmay.taskmanager.view.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.sweetmay.taskmanager.R
-import com.sweetmay.taskmanager.extensions.getColorRes
+import com.sweetmay.taskmanager.extensions.getColorInt
 import com.sweetmay.taskmanager.model.Note
 import com.sweetmay.taskmanager.view.ui.base.BaseActivity
 import com.sweetmay.taskmanager.view.ui.customviews.colorpicker.OnColorClickListener
@@ -13,12 +14,14 @@ import kotlinx.android.synthetic.main.activity_note.*
 import kotlinx.android.synthetic.main.appbar_layout.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>() {
+class NoteActivity : BaseActivity<NoteData>() {
 
     override val layoutRes: Int?
         get() = R.layout.activity_note
 
     override val viewModel: NoteViewModel by viewModel()
+
+    var currentColor: Int = Color.BLACK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,13 +34,14 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     private fun initCirclesContainerView() {
         val colors: ArrayList<Int> = ArrayList()
-        Note.Color.values().forEach { color ->
-            colors.add(color.getColorRes())
+        App.Color.values().forEach { color ->
+            colors.add(color.getColorInt(this))
         }
         circle_container.addCircles(colors, object : OnColorClickListener {
             override fun onClick(color: Int) {
-                toolbar.setBackgroundColor(getColor(color))
-                viewModel.save(note_title.text.toString(), note_body.text.toString())
+                toolbar.setTitleTextColor(color)
+                currentColor = color
+                viewModel.save(note_title.text.toString(), note_body.text.toString(), currentColor)
             }
         })
     }
@@ -77,17 +81,19 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     private fun editNote() {
         if (intent.extras?.get("note") != null) {
-            viewModel.loadNote(intent.extras?.get("note") as String)
+            val note: Note = intent.extras?.get("note") as Note
+            viewModel.loadNote(note.id)
+            toolbar.setTitleTextColor(note.color)
+            currentColor = note.color
         }
     }
 
-    override fun renderData(data: Note?) {
-        data?.let { note_title.setText(it.title); note_body.setText(it.text)}
+    override fun renderData(data: NoteData) {
+        data.note.let { note_title.setText(it?.title); note_body.setText(it?.text)}
     }
-
 
     override fun onPause() {
         super.onPause()
-        viewModel.save(note_title.text.toString(), note_body.text.toString())
+        viewModel.save(note_title.text.toString(), note_body.text.toString(), currentColor )
     }
 }

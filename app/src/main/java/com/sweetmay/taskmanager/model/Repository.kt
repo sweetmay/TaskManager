@@ -2,9 +2,9 @@ package com.sweetmay.taskmanager.model
 
 class Repository(val dataProvider: DataProvider) {
 
-    fun getCurrentUser() = dataProvider.getCurrentUser()
+    suspend fun getCurrentUser() = dataProvider.getCurrentUser()
     fun getNotes() = dataProvider.subscribeToAllNotes()
-    fun saveNote(note: Note) = dataProvider.saveNote(note)
-    fun getNoteById(id: String) = dataProvider.getById(id)
-    fun deleteNoteById(id: String) = dataProvider.deleteNoteById(id)
+    suspend fun saveNote(note: Note) = dataProvider.saveNote(note)
+    suspend fun getNoteById(id: String) = dataProvider.getById(id)
+    suspend fun deleteNoteById(id: String) = dataProvider.deleteNoteById(id)
 }

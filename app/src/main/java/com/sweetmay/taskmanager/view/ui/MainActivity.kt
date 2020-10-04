@@ -3,7 +3,6 @@ package com.sweetmay.taskmanager.view.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sweetmay.taskmanager.R
 import com.sweetmay.taskmanager.model.Note
@@ -15,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>(), OnItemRVClick {
+class MainActivity : BaseActivity<List<Note>?>(), OnItemRVClick, OnItemRVLongClick {
 
     companion object {
         fun start(context: Context) = Intent(context, MainActivity::class.java).apply {
@@ -33,7 +32,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), OnItemRVClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         notes_rv.layoutManager = LinearLayoutManager(this)
-        adapterRV = TaskAdapterRV(this)
+        adapterRV = TaskAdapterRV(this, this)
         notes_rv.adapter = adapterRV
 
         val intent = Intent(this, NoteActivity::class.java)
@@ -42,12 +41,16 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>(), OnItemRVClick {
 
     override fun onItemClick(note: Note) {
         val intent = Intent(this, NoteActivity::class.java)
-        intent.putExtra("note", note.id)
+        intent.putExtra("note", note)
         startActivity(intent)
     }
 
     override fun renderData(data: List<Note>?) {
         data?.let { adapterRV.notes = it }
+    }
+
+    override fun onItemLongClick(note: Note) {
+        
     }
 
 }

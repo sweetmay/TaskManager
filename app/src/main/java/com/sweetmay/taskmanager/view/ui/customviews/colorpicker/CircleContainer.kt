@@ -99,22 +99,21 @@ class CircleContainer@JvmOverloads constructor(context: Context, attrs: Attribut
     fun addCircles(colors: List<Int>, onColorClickListener: OnColorClickListener){
         colors.forEach(){
             addView(ColorCircle(context).apply {
-                fillColorRes = it
+                fillPaint.color = it
                 tag = it
                 setPadding(circlesPadding.toInt(),
                     circlesPadding.toInt(),
                     circlesPadding.toInt(),
                     circlesPadding.toInt()
                 )
-                strokeColorRes = R.color.violet
-                setOnClickListener { onColorClickListener.onClick(fillColorRes)
-                changeSelected(fillColorRes)}
+                strokePaint.color = it
+                setOnClickListener { onColorClickListener.onClick(fillPaint.color)
+                changeSelected(fillPaint.color)}
             })
         }
     }
 
     private fun changeSelected(color: Int) {
-
         children.forEach {
             if(it.tag == color){
                 (it as ColorCircle).changeSelect(true)
