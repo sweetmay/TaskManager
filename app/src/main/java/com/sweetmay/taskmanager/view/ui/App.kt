@@ -12,7 +12,14 @@ class App: Application() {
         lateinit var instance : App
             private set
     }
-
+    enum class Color {
+        WHITE,
+        VIOLET,
+        YELLOW,
+        RED,
+        PINK,
+        GREEN
+    }
     override fun onCreate() {
         super.onCreate()
         instance = this

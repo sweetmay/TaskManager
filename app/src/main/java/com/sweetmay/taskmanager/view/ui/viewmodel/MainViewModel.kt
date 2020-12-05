@@ -1,31 +1,31 @@
 package com.sweetmay.taskmanager.view.ui.viewmodel
 
-import androidx.lifecycle.Observer
+import androidx.annotation.VisibleForTesting
 import com.sweetmay.taskmanager.model.Note
 import com.sweetmay.taskmanager.model.NoteResult
 import com.sweetmay.taskmanager.model.Repository
-import com.sweetmay.taskmanager.view.ui.MainViewState
 import com.sweetmay.taskmanager.view.ui.base.BaseViewModel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 
-class MainViewModel(val repository: Repository): BaseViewModel<List<Note>?, MainViewState>(){
+class MainViewModel(val repository: Repository): BaseViewModel<List<Note>?>() {
 
-    private val notesObserver = Observer<NoteResult> {
-        it ?: return@Observer
-        when(it){
-            is NoteResult.Success<*> -> viewStateLiveData.value = MainViewState(notes = it.data as? List<Note>)
-            is NoteResult.Error -> viewStateLiveData.value = MainViewState(error = it.error)
+    private val notesChannel = repository.getNotes()
+
+    init {
+        launch {
+            notesChannel.consumeEach {
+                when(it){
+                    is NoteResult.Success<*> -> setData(it.data as? List<Note>)
+                    is NoteResult.Error -> setError(it.error)
+                }
+            }
         }
     }
 
-    private val repositoryNotes = repository.getNotes()
-
-    init {
-        viewStateLiveData.value = MainViewState()
-        repositoryNotes.observeForever (notesObserver)
-    }
-
-    override fun onCleared() {
+    @VisibleForTesting
+    public override fun onCleared() {
         super.onCleared()
-        repositoryNotes.removeObserver(notesObserver)
+        notesChannel.cancel()
     }
 }

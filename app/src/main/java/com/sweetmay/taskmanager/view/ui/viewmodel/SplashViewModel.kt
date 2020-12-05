@@ -6,27 +6,14 @@ import com.sweetmay.taskmanager.model.User
 import com.sweetmay.taskmanager.model.errors.NoAuthException
 import com.sweetmay.taskmanager.view.ui.SplashViewState
 import com.sweetmay.taskmanager.view.ui.base.BaseViewModel
+import kotlinx.coroutines.launch
 
-class SplashViewModel(val repository: Repository): BaseViewModel<Boolean?, SplashViewState>() {
+class SplashViewModel(val repository: Repository): BaseViewModel<Boolean?>() {
 
-    private val user
-        get() = repository.getCurrentUser()
-
-    private val notesObserver = Observer<User?>{
-        viewStateLiveData.value = if(it!=null){
-            SplashViewState(isAuthenticated = true)
-        }else {
-            SplashViewState(error = NoAuthException())
-        }
-    }
-
-    fun requestUser(){
-        user.observeForever(notesObserver)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        user.removeObserver(notesObserver)
+    fun requestUser() = launch{
+        repository.getCurrentUser()?.let {
+            setData(true)
+        } ?: setError(NoAuthException())
     }
 
 }

@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
@@ -31,11 +30,11 @@ class ColorCircle @JvmOverloads constructor(context: Context, attrs: AttributeSe
         invalidate()
     }
 
-    private val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
 
-    private val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    val strokePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
     }
 

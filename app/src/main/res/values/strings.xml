@@ -3,7 +3,7 @@
     <string name="title">Title</string>
     <string name="note">Note</string>
     <string name="empty_note_body">Empty note</string>
-    <string name="empty_note_title">Note</string>
+    <string name="empty_note_title">Empty title</string>
     <string name="base_error">Something went wrong</string>
     <string name="delete">Delete</string>
     <string name="color_palette">Color palette</string>
